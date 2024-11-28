@@ -1,33 +1,43 @@
 package com.cristinamellado.tarea3dwescristinamellado.modelo;
 
 import java.io.Serializable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import java.util.LinkedList;
+import java.util.List;
+
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="ejemplar")
+@Table(name="ejemplares")
 public class Ejemplar implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //se genera automaticamente
 	private Long id;
 	
 	@Column
 	private String nombre;
 	
+	//relación de las tablas
 	@ManyToOne
-	@JoinColumn(name="idplanta")
+	@JoinColumn(name="id_planta")
 	private Planta planta;
 	
+	//relacion un ejemplar tiene muchos mensajes
+	@OneToMany
+	@JoinColumn(name="id_ejemplar")
+	private List<Mensaje> listaMensajes = new LinkedList<Mensaje>();
+	
 	public Ejemplar() {}
+	
+	
+	public Ejemplar(String nombre, Planta planta, List<Mensaje> listaMensajes) {
+		this.nombre = nombre;
+		this.planta = planta;
+		this.listaMensajes = listaMensajes;
+	}
+
 
 	public Long getId() {
 		return id;
@@ -59,6 +69,16 @@ public class Ejemplar implements Serializable{
 
 	public void setPlanta(Planta planta) {
 		this.planta = planta;
+	}
+
+
+	public List<Mensaje> getListaMensajes() {
+		return listaMensajes;
+	}
+
+
+	public void setListaMensajes(List<Mensaje> listaMensajes) {
+		this.listaMensajes = listaMensajes;
 	}
 	
 	

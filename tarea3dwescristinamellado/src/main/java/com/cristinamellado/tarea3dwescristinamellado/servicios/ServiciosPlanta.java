@@ -2,7 +2,6 @@ package com.cristinamellado.tarea3dwescristinamellado.servicios;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Planta;
 import com.cristinamellado.tarea3dwescristinamellado.repository.PlantaRepository;
 
@@ -19,6 +18,7 @@ public class ServiciosPlanta {
 	
 	public void insertar(Planta p) {
 		plantarepo.saveAndFlush(p);
+			//guarda la entidad sobre la tabla que corresponda
 		
 	}
 	
