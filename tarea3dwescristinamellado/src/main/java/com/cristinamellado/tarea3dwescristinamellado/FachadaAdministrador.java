@@ -3,15 +3,23 @@ package com.cristinamellado.tarea3dwescristinamellado;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Perfil;
+import com.cristinamellado.tarea3dwescristinamellado.modelo.Persona;
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Sesion;
+import com.cristinamellado.tarea3dwescristinamellado.servicio.ServiciosPersona;
+
 
 
 @Component
 public class FachadaAdministrador {
 
+	@Autowired
+	ServiciosPersona serviciosPersona;
+	
+	
 	private Sesion sesion;
 	Scanner teclado = new Scanner(System.in);
 	
@@ -43,6 +51,13 @@ public class FachadaAdministrador {
 					String usuario = teclado.nextLine();
 					System.out.print("Introduce password (mínimo 5 caracteres): ");
 					String password = teclado.nextLine();
+					
+					Persona persona = new Persona(nombre, email);
+					if(serviciosPersona.insertarPersona(persona, usuario, password)) {
+						System.out.println("Se insertó correctamente la persona y su credencial.");
+					}else {
+						System.out.println("No se pudo insertar la persona");
+					}
 					break;
 				case 2:
 					mostrarMenuPlantas();

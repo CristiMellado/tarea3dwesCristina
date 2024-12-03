@@ -2,6 +2,8 @@ package com.cristinamellado.tarea3dwescristinamellado.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cristinamellado.tarea3dwescristinamellado.modelo.Persona;
 import com.cristinamellado.tarea3dwescristinamellado.repository.CredencialRepository;
 import com.cristinamellado.tarea3dwescristinamellado.repository.PersonaRepository;
 
@@ -13,18 +15,27 @@ public class ServiciosPersona {
 	PersonaRepository personaRepository;
 	@Autowired
 	CredencialRepository credencialRepository;
-
-//	public boolean existePersona(Persona persona) {
-//		return personaRepository.existePersona(persona);
-//	}
 	
-//	public boolean insertarPersona(Persona persona) {
-//		if(!existePersona(persona)) {
-//			personaRepository.saveAndFlush(persona);
-//			return true;
-//		}
-//		return false;
-//	}
+	
+	public boolean insertarPersona(Persona persona, String usuario, String password) {
+		if(!existePersona(persona.getEmail())) {
+			Persona p = personaRepository.saveAndFlush(persona);
+			if(p != null) {
+				credencialRepository.insertarCredencial(usuario, password, p.getId());
+				return true;
+			}
+		}
+		return false;
+	}
+	
+
+	public boolean existePersona(String email) {
+		if( personaRepository.existePersona(email)!=null) {
+			return true;
+		}
+		return false;
+	}
+	
 
 	
 

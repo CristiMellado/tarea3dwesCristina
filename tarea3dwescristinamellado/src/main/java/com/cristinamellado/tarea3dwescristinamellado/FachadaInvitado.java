@@ -19,7 +19,11 @@ public class FachadaInvitado {
 	ServiciosPlanta serviciosPlanta;
 	@Autowired
 	ServiciosCredencial serviciosCredencial;
-	
+    @Autowired
+    FachadaAdministrador fachadaAdministrador;
+    @Autowired
+    FachadaPersonal fachadaPersonal;
+    
 	Scanner teclado = new Scanner(System.in);
 
 	public static Sesion sesion = new Sesion(Perfil.INVITADO);
@@ -38,9 +42,13 @@ public class FachadaInvitado {
 					switch(opcion) {
 					case 1:
 						listaPlantas = serviciosPlanta.verPlantas();
-						for (Planta planta : listaPlantas) {
-							System.out.println(planta.datosVersionLarga());
-						}
+						if(!listaPlantas.isEmpty()) {
+							for (Planta planta : listaPlantas) {
+								System.out.println(planta.datosVersionLarga());
+							}
+						}else {
+							System.out.println("No existe ninguna planta");
+						}	
 					break;
 					case 2:
 						teclado.nextLine();
@@ -55,12 +63,10 @@ public class FachadaInvitado {
 							sesion.setUsuario(usuario);
 							if (sesion.getPerfil() == Perfil.ADMINISTRADOR) {
 								System.out.println("Login correcto con perfil Administrador");
-								FachadaAdministrador fachadaAdministrador = new FachadaAdministrador();
 								fachadaAdministrador.setSesion(sesion);
 								fachadaAdministrador.mostrarMenu();
 							} else {
 								System.out.println("Login correcto con perfil Personal");
-								FachadaPersonal fachadaPersonal = new FachadaPersonal();
 								fachadaPersonal.setSesion(sesion);
 								fachadaPersonal.mostrarMenu();
 							}

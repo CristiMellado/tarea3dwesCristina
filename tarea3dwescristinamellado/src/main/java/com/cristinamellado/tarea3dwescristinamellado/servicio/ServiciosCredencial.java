@@ -16,8 +16,19 @@ public class ServiciosCredencial {
 	CredencialRepository credencialRepository;
 
 	
-	public void insertarCredencial(Credencial p) {
-		credencialRepository.saveAndFlush(p);
+//	public boolean insertarCredencial(String usuario, String password, Long idPersona) {
+//		if(!existeCredencial(usuario)) {
+//			credencialRepository.insertarCredencial(usuario,password, idPersona);
+//			return true;
+//		}
+//		return false;
+//	}
+	
+	public boolean existeCredencial(String usuario) {
+		if( credencialRepository.existeCredencial(usuario)!=null) {
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean autenticar(String usuario, String password) {
@@ -26,7 +37,7 @@ public class ServiciosCredencial {
 				FachadaInvitado.sesion = new Sesion(Perfil.ADMINISTRADOR);
 				return true;
 			} else {
-				Credencial ret = credencialRepository.autenticar(usuario);
+				Credencial ret = credencialRepository.autenticar(usuario, password);
 				if (ret!=null) {
 					FachadaInvitado.sesion = new Sesion(Perfil.PERSONAL);
 					return true;
