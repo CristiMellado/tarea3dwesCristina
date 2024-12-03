@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class Tarea3dwescristinamelladoApplication {
 	
-	//se añade referencia a la clase principal
 	
 	@Bean
 	public Principal applicationStartupRunner() {

@@ -1,4 +1,4 @@
-package com.cristinamellado.tarea3dwescristinamellado.servicios;
+package com.cristinamellado.tarea3dwescristinamellado.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +13,8 @@ public class ServiciosMensaje {
 	MensajeRepository mensajesRepository;
 
 	
-	public void insertar(Mensaje p) {
+	public void insertarMensaje(Mensaje p) {
 		mensajesRepository.saveAndFlush(p);
-			//guarda la entidad sobre la tabla que corresponda
-		
 	}
 
 

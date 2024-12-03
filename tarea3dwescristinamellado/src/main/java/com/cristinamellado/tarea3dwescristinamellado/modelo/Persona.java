@@ -22,11 +22,6 @@ public class Persona implements Serializable {
 	@Column(unique = true)
 	private String email;
 	
-	//Relacion 1 a 1 unidireccional de Persona hacia Credencial
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_credencial")
-	private Credencial credencial;
-	
 	//Relacion 1 n de mensajes 
 	@OneToMany
 	@JoinColumn(name="id_persona")
@@ -35,10 +30,9 @@ public class Persona implements Serializable {
 	public Persona() {}
 		
 
-	public Persona(String nombre, String email, Credencial credencial, List<Mensaje> listaMensajes) {
+	public Persona(String nombre, String email, List<Mensaje> listaMensajes) {
 		this.nombre = nombre;
 		this.email = email;
-		this.credencial = credencial;
 		this.listaMensajes = listaMensajes;
 	}
 	
@@ -71,13 +65,6 @@ public class Persona implements Serializable {
 		this.email = email;
 	}
 
-	public Credencial getCredencial() {
-		return credencial;
-	}
-
-	public void setCredencial(Credencial credencial) {
-		this.credencial = credencial;
-	}
 
 	public List<Mensaje> getListaMensajes() {
 		return listaMensajes;
@@ -86,8 +73,14 @@ public class Persona implements Serializable {
 	public void setListaMensajes(List<Mensaje> listaMensajes) {
 		this.listaMensajes = listaMensajes;
 	}
-	
-	
+
+	public String datosVersionCorta() {
+		String resultado = "";
+		resultado += "Id: " + id;
+		resultado += "\nNombre: " + nombre;
+		resultado += "\nE-mail: " + email;
+		return resultado;
+	}
 	
 	
 }

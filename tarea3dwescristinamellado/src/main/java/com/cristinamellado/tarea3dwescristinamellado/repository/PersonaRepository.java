@@ -8,6 +8,7 @@ import com.cristinamellado.tarea3dwescristinamellado.modelo.Persona;
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long>{
 
+
 	
 	//metodos con operativa con la base de datos
 	

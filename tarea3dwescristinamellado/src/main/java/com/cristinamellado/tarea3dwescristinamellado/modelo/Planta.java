@@ -77,7 +77,23 @@ public class Planta implements Serializable {
 	public void setListaEjemplares(List<Ejemplar> listaEjemplares) {
 		this.listaEjemplares = listaEjemplares;
 	}
-	
+
+
+	public String datosVersionCorta() {
+		String resultado = "";
+		resultado += "ID: " + id;
+		resultado += "\nCódigo: " + codigo;
+		return resultado;
+	}
+
+	public String datosVersionLarga() {
+		String resultado = "";
+		resultado += "ID: " + id;
+		resultado += "\nCódigo: " + codigo;
+		resultado += "\nNombre común: " + nombreComun;
+		resultado += "\nNombre científico: " + nombreCientifico;
+		return resultado;
+	}
 	
 	
 	

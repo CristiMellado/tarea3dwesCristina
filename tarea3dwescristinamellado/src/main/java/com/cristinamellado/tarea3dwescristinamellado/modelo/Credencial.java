@@ -38,5 +38,12 @@ public class Credencial implements Serializable {
 		this.usuario = usuario;
 	}
 	
+	public String datosVersionCorta() {
+		String resultado = "";
+		resultado += "Id: " + id;
+		resultado += "\nUsuario " + usuario;
+		return resultado;
+	}
+	
 	
 }

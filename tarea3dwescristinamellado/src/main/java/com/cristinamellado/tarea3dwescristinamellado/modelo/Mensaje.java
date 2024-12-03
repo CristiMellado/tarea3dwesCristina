@@ -2,6 +2,8 @@ package com.cristinamellado.tarea3dwescristinamellado.modelo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,7 +17,8 @@ public class Mensaje implements Serializable{
 	private Long id;
 	
 	@Column
-	private LocalDateTime fechahora;
+	@Temporal(TemporalType.TIMESTAMP) 
+	private Date fechahora;
 	
 	@Column
 	private String mensaje;
@@ -33,7 +36,7 @@ public class Mensaje implements Serializable{
 	public Mensaje() {}
 
 	public Mensaje(String mensaje, Persona persona,Ejemplar ejemplar) {
-		this.fechahora = LocalDateTime.now();
+		this.fechahora = new Date(); 
 		this.mensaje = mensaje;
 		this.persona = persona;
 		this.ejemplar = ejemplar;
@@ -47,11 +50,11 @@ public class Mensaje implements Serializable{
 		this.id = id;
 	}
 
-	public LocalDateTime getFechahora() {
+	public Date getFechahora() {
 		return fechahora;
 	}
 
-	public void setFechahora(LocalDateTime fechahora) {
+	public void setFechahora(Date fechahora) {
 		this.fechahora = fechahora;
 	}
 
@@ -77,6 +80,24 @@ public class Mensaje implements Serializable{
 
 	public void setEjemplar(Ejemplar ejemplar) {
 		this.ejemplar = ejemplar;
+	}
+
+	public String datosVersionCorta() {
+		String resultado = "";
+		resultado += "Id: " + id;
+		resultado += "\nMensaje: " + mensaje;
+		resultado += "\nId Persona: " + persona.getId();
+		return resultado;
+	}
+
+	public String datosVersionLarga() {
+		String resultado = "";
+		resultado += "Id: " + id;
+		resultado += "\nFecha-Hora: " + fechahora;
+		resultado += "\nMensaje: " + mensaje;
+		resultado += "\nId Ejemplar: " + ejemplar.getId();
+		resultado += "\nId Persona: " + persona.getId();
+		return resultado;
 	}
 	
 	

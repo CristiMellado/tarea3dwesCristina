@@ -13,7 +13,7 @@ public class Ejemplar implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //se genera automaticamente
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
 	
 	@Column
@@ -25,7 +25,7 @@ public class Ejemplar implements Serializable{
 	private Planta planta;
 	
 	//relacion un ejemplar tiene muchos mensajes
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL) 
 	@JoinColumn(name="id_ejemplar")
 	private List<Mensaje> listaMensajes = new LinkedList<Mensaje>();
 	
@@ -80,8 +80,22 @@ public class Ejemplar implements Serializable{
 	public void setListaMensajes(List<Mensaje> listaMensajes) {
 		this.listaMensajes = listaMensajes;
 	}
-	
-	
+
+
+	public String datosVersionCorta() {
+		String resultado = "";
+		resultado += "ID: " + id;
+		resultado += "\nNombre: " + nombre;
+		return resultado;
+	}
+
+	public String datosVersionLarga() {
+		String resultado = "";
+		resultado += "ID: " + id;
+		resultado += "\nNombre: " + nombre;
+		resultado += "\nID Planta: " + planta.getId();
+		return resultado;
+	}
 	
 
 }
