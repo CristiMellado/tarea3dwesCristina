@@ -1,6 +1,7 @@
 package com.cristinamellado.tarea3dwescristinamellado.servicio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,12 @@ public class ServiciosPlanta {
 	}
 	
 	
-	
-	public boolean existePlanta(Planta planta) {
-		return plantaRepository.existePlanta(planta);
-	}
-	
-	
+	/**
+	 * CU4A: Insertar Planta
+	 * @return boolean que indica si se pudo o no insertar la planta
+	 */
 	public boolean insertarPlanta(Planta planta) {
-		if(!existePlanta(planta)) {
+		if(plantaRepository.findByCodigo(planta.getCodigo()) == null) {
 			plantaRepository.saveAndFlush(planta);
 			return true;
 		}
@@ -38,6 +37,21 @@ public class ServiciosPlanta {
 	}
 	
 	
+	/**
+	 * CU4B: Modificar Planta
+	 * @return boolean que indica si se pudo o no modificar la planta
+	 */
+	public boolean modificarPlanta(Planta planta) {
+		if(plantaRepository.existsById(planta.getId())) {
+			plantaRepository.saveAndFlush(planta);
+			return true;
+		}
+		return false;
+	}
+	
+	public Optional<Planta> existePlanta(Long id) {
+		return plantaRepository.findById(id);
+	}
 	
 
 	

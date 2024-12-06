@@ -128,6 +128,7 @@ public class FachadaPersonal {
 	
 //**************************************************************************************************
 	private void cerrarSesion() {
+		System.out.println("Sesión Finalizada");
 		sesion.setPerfil(Perfil.INVITADO);
 		sesion.setUsuario(null);
 	}

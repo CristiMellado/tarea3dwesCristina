@@ -17,8 +17,5 @@ public class ServiciosMensaje {
 		mensajesRepository.saveAndFlush(p);
 	}
 
-
-	
-
 	
 }//class

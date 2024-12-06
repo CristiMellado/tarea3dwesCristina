@@ -17,8 +17,5 @@ public class ServiciosEjemplar {
 		ejemplarRepo.saveAndFlush(ejemplar);
 	}
 
-
-	
-
 	
 }//class

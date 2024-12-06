@@ -1,15 +1,15 @@
 package com.cristinamellado.tarea3dwescristinamellado;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristinamellado.tarea3dwescristinamellado.modelo.Perfil;
-import com.cristinamellado.tarea3dwescristinamellado.modelo.Persona;
-import com.cristinamellado.tarea3dwescristinamellado.modelo.Sesion;
+import com.cristinamellado.tarea3dwescristinamellado.modelo.*;
 import com.cristinamellado.tarea3dwescristinamellado.servicio.ServiciosPersona;
+import com.cristinamellado.tarea3dwescristinamellado.servicio.ServiciosPlanta;
 
 
 
@@ -18,6 +18,9 @@ public class FachadaAdministrador {
 
 	@Autowired
 	ServiciosPersona serviciosPersona;
+	
+	@Autowired
+	ServiciosPlanta serviciosPlanta;
 	
 	
 	private Sesion sesion;
@@ -53,11 +56,7 @@ public class FachadaAdministrador {
 					String password = teclado.nextLine();
 					
 					Persona persona = new Persona(nombre, email);
-					if(serviciosPersona.insertarPersona(persona, usuario, password)) {
-						System.out.println("Se insertó correctamente la persona y su credencial.");
-					}else {
-						System.out.println("No se pudo insertar la persona");
-					}
+					System.out.println(serviciosPersona.registrarPersona(persona, usuario, password));
 					break;
 				case 2:
 					mostrarMenuPlantas();
@@ -104,15 +103,35 @@ public class FachadaAdministrador {
 					String nombreComun = teclado.nextLine();
 					System.out.print("Introduce nombre científico: ");
 					String nombreCientifico = teclado.nextLine();
+					
+					if(serviciosPlanta.insertarPlanta(new Planta(codigo, nombreComun, nombreCientifico))) {
+						System.out.println("Se insertó la planta "+ nombreComun.toUpperCase() + " correctamente.");
+					}else {
+						System.out.println("No se pudo insertar la planta, el código "+ codigo + " ya existe.");
+					}
 					break;
 				case 2:
 					teclado.nextLine();
-					System.out.print("Introduce codigo de planta: ");
-					codigo = teclado.nextLine().trim().toUpperCase();
-					System.out.print("Introduce nombre común de la planta: ");
-					nombreComun = teclado.nextLine();
-					System.out.print("Introduce nombre cientifico de la planta: ");
-					nombreCientifico = teclado.nextLine();
+					mostrasPlantas();
+					System.out.print("Introduce el id de la planta: ");
+					Long id = teclado.nextLong();
+					if(!serviciosPlanta.existePlanta(id).isEmpty()) {
+						teclado.nextLine();
+						System.out.print("Introduce codigo de planta (solo letras sin espacios): ");
+						codigo = teclado.nextLine().trim().toUpperCase();
+						System.out.print("Introduce nombre común de la planta: ");
+						nombreComun = teclado.nextLine();
+						System.out.print("Introduce nombre cientifico de la planta: ");
+						nombreCientifico = teclado.nextLine();
+						
+						if(serviciosPlanta.modificarPlanta(new Planta(id, codigo, nombreComun, nombreCientifico))) {
+							System.out.println("Se modificó la planta "+ nombreComun.toUpperCase() + " correctamente.");
+						}else {
+							System.out.println("No se pudo modificar la planta, con el id: " + id);
+						}
+					}else {
+						System.out.println("No existe la planta");
+					}
 					break;
 				case 3:
 					salirPlantas = true;
@@ -127,6 +146,18 @@ public class FachadaAdministrador {
 				System.out.println("Ocurrio un error " + e.getMessage());
 			}
 		}
+	}
+
+	private void mostrasPlantas() {
+		List<Planta> listaPlantas = serviciosPlanta.verPlantas();
+		if(!listaPlantas.isEmpty()) {
+			for (Planta planta : listaPlantas) {
+				System.out.println(planta.datosVersionLarga());
+			}
+		}else {
+			System.out.println("No existe ninguna planta");
+		}
+		
 	}
 
 	// *******************************************************************************************************
@@ -216,6 +247,7 @@ public class FachadaAdministrador {
 
 	// *******************************************************************************************************
 	private void cerrarSesion() {
+		System.out.println("Sesión Finalizada");
 		sesion.setPerfil(Perfil.INVITADO);
 		sesion.setUsuario(null);
 	}

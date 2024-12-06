@@ -13,6 +13,8 @@ public interface PersonaRepository extends JpaRepository<Persona, Long>{
 	@Query("Select p from Persona p where email=:email")
 	Persona existePersona(@Param ("email") String email);
 
+	Persona findByEmail(String email);
+
 
 	
 	//metodos con operativa con la base de datos

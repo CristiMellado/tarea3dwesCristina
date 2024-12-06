@@ -16,15 +16,12 @@ public class Credencial implements Serializable {
 	@Column(unique = true)
 	private String usuario;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_persona")
-	Persona persona;
 
 	public Credencial() {}
 	
-	public Credencial(String usuario, Persona persona) {
+	public Credencial(String usuario) {
 		this.usuario = usuario;
-		this.persona = persona;
+
 	}
 
 	public Long getId() {

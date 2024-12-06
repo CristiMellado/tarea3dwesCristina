@@ -57,16 +57,15 @@ public class FachadaInvitado {
 						System.out.print("Introduce su contraseña: ");
 						String password = teclado.nextLine();
 
-						boolean correcto = serviciosCredencial.autenticar(usuario, password);
+						boolean correcto = serviciosCredencial.autenticar(usuario.trim(), password.trim());
 
 						if (correcto) {
 							sesion.setUsuario(usuario);
+							System.out.println("¡Bienvenido "+ usuario.toUpperCase()+"!");
 							if (sesion.getPerfil() == Perfil.ADMINISTRADOR) {
-								System.out.println("Login correcto con perfil Administrador");
 								fachadaAdministrador.setSesion(sesion);
 								fachadaAdministrador.mostrarMenu();
 							} else {
-								System.out.println("Login correcto con perfil Personal");
 								fachadaPersonal.setSesion(sesion);
 								fachadaPersonal.mostrarMenu();
 							}
@@ -75,6 +74,7 @@ public class FachadaInvitado {
 						}
 					break;
 					case 3:
+						System.out.println("Saliendo del programa...");
 						salir=true;
 						break;
 					default:

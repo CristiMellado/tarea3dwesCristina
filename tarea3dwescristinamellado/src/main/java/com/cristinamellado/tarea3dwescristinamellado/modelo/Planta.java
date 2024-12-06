@@ -38,6 +38,20 @@ public class Planta implements Serializable {
 	}
 
 
+	public Planta(String codigo, String nombreComun, String nombreCientifico) {
+		this.codigo = codigo;
+		this.nombreComun = nombreComun;
+		this.nombreCientifico = nombreCientifico;
+	}
+	
+
+	public Planta(Long id, String codigo, String nombreComun, String nombreCientifico) {
+		this.id = id;
+		this.codigo = codigo;
+		this.nombreComun = nombreComun;
+		this.nombreCientifico = nombreCientifico;
+	}
+
 	public Long getId() {
 		return id;
 	}

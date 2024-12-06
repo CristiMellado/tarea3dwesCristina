@@ -8,7 +8,6 @@ import com.cristinamellado.tarea3dwescristinamellado.repository.CredencialReposi
 import com.cristinamellado.tarea3dwescristinamellado.validacion.Validacion;
 
 
-
 @Service
 public class ServiciosCredencial {
 
@@ -16,16 +15,8 @@ public class ServiciosCredencial {
 	CredencialRepository credencialRepository;
 
 	
-//	public boolean insertarCredencial(String usuario, String password, Long idPersona) {
-//		if(!existeCredencial(usuario)) {
-//			credencialRepository.insertarCredencial(usuario,password, idPersona);
-//			return true;
-//		}
-//		return false;
-//	}
-	
 	public boolean existeCredencial(String usuario) {
-		if( credencialRepository.existeCredencial(usuario)!=null) {
+		if( credencialRepository.findByUsuario(usuario)!=null) {
 			return true;
 		}
 		return false;
