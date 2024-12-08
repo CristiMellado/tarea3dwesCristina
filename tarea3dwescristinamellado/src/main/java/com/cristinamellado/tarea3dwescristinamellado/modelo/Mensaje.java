@@ -94,8 +94,8 @@ public class Mensaje implements Serializable{
 		resultado += "Id: " + id;
 		resultado += "\nFecha-Hora: " + fechahora;
 		resultado += "\nMensaje: " + mensaje;
-		resultado += "\nId Ejemplar: " + ejemplar.getId();
-		resultado += "\nId Persona: " + persona.getId();
+		resultado += "\nNombre Ejemplar: " + ejemplar.getNombre();
+		resultado += "\nNombre Persona: " + persona.getNombre();
 		return resultado;
 	}
 	

@@ -221,7 +221,7 @@ public class FachadaAdministrador {
 					for (String idPlanta : idsVarios) {
 						seleccionIds.add(Long.parseLong(idPlanta.trim()));
 					}
-					ArrayList<Ejemplar> listaEjemplares = serviciosEjemplar.filtrarEjemplaresPlanta(seleccionIds);
+					List<Ejemplar> listaEjemplares = serviciosEjemplar.filtrarEjemplaresPlanta(seleccionIds);
 					if (listaEjemplares.size() > 0) {
 				        System.out.println("Nombre del Ejemplar | Nº de Mensajes | Fecha/Hora del Último Mensaje");
 				        System.out.println("--------------------------------------------------------------------");
@@ -246,6 +246,16 @@ public class FachadaAdministrador {
 					break;
 				case 3:
 					teclado.nextLine();
+					List<Ejemplar> lista=serviciosEjemplar.listaEjemplares();
+					for (Ejemplar ej : lista) {
+						System.out.println(ej.datosVersionCorta());
+					}
+					System.out.println("Introduce el id del ejemplar del cual quiere ver los mensajes de seguimiento");
+					Long idEjemplar=teclado.nextLong();
+					List<Mensaje> mensajes=serviciosEjemplar.seguimientoMensajes(idEjemplar);
+					for (Mensaje mensaje : mensajes) {
+						System.out.println(mensaje.datosVersionLarga());
+					}
 					break;
 				case 4:
 					salirEjemplares = true;
@@ -278,6 +288,23 @@ public class FachadaAdministrador {
 				switch (opcion) {
 				case 1:
 					teclado.nextLine();
+					List<Ejemplar> listaEjemplares=serviciosEjemplar.listaEjemplares();
+					for (Ejemplar ejemplar : listaEjemplares) {
+						System.out.println(ejemplar.datosVersionCorta());
+					}
+					System.out.println("Introduce el id del ejemplar para añadir el mensaje");
+					Long id=teclado.nextLong();
+					teclado.nextLine();
+					Ejemplar ejemplar = serviciosEjemplar.findById(id).get();
+					System.out.println("Introduce tu mensaje");
+					String mensaje = teclado.nextLine();
+					Persona persona = serviciosPersona.findByNombre(sesion.getUsuario());
+					Mensaje msj = new Mensaje(mensaje,persona, ejemplar);
+					if(serviciosMensaje.insertarMensaje(msj)) {
+						System.out.println("Se insertó correctamente el mensaje");
+					}else {
+						System.out.println("Error al introducir el mensaje");
+					}
 					break;
 				case 2:
 					teclado.nextLine();

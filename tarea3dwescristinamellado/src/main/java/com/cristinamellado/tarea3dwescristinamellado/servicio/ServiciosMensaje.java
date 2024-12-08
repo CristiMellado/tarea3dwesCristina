@@ -13,8 +13,11 @@ public class ServiciosMensaje {
 	MensajeRepository mensajesRepository;
 
 	
-	public void insertarMensaje(Mensaje p) {
-		mensajesRepository.saveAndFlush(p);
+	public boolean insertarMensaje(Mensaje p) {
+		if(mensajesRepository.saveAndFlush(p)!=null) {
+			return true;
+		}
+		return false;
 	}
 
 	
