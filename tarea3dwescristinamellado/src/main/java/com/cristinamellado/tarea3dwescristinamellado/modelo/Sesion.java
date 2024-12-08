@@ -1,6 +1,5 @@
 package com.cristinamellado.tarea3dwescristinamellado.modelo;
 
-import org.springframework.stereotype.Component;
 
 public class Sesion {
 

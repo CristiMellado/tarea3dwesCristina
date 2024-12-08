@@ -55,6 +55,10 @@ public class ServiciosPersona {
 		}
 		return false;
 	}
+
+	public Persona findByNombre(String nombre) {
+		return personaRepository.findByNombre(nombre);
+	}
 	
 
 	

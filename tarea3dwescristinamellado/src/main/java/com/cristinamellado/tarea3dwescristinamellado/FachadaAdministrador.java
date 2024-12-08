@@ -1,15 +1,21 @@
 package com.cristinamellado.tarea3dwescristinamellado;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cristinamellado.tarea3dwescristinamellado.modelo.*;
-import com.cristinamellado.tarea3dwescristinamellado.servicio.ServiciosPersona;
-import com.cristinamellado.tarea3dwescristinamellado.servicio.ServiciosPlanta;
+import com.cristinamellado.tarea3dwescristinamellado.servicio.*;
+
 
 
 
@@ -21,6 +27,12 @@ public class FachadaAdministrador {
 	
 	@Autowired
 	ServiciosPlanta serviciosPlanta;
+	
+	@Autowired
+	ServiciosEjemplar serviciosEjemplar;
+	
+	@Autowired
+	ServiciosMensaje serviciosMensaje;
 	
 	
 	private Sesion sesion;
@@ -112,7 +124,14 @@ public class FachadaAdministrador {
 					break;
 				case 2:
 					teclado.nextLine();
-					mostrasPlantas();
+					List<Planta> listaPlantas = serviciosPlanta.verPlantas();
+					if(!listaPlantas.isEmpty()) {
+						for (Planta planta : listaPlantas) {
+							System.out.println(planta.datosVersionLarga());
+						}
+					}else {
+						System.out.println("No existe ninguna planta");
+					}
 					System.out.print("Introduce el id de la planta: ");
 					Long id = teclado.nextLong();
 					if(!serviciosPlanta.existePlanta(id).isEmpty()) {
@@ -148,17 +167,6 @@ public class FachadaAdministrador {
 		}
 	}
 
-	private void mostrasPlantas() {
-		List<Planta> listaPlantas = serviciosPlanta.verPlantas();
-		if(!listaPlantas.isEmpty()) {
-			for (Planta planta : listaPlantas) {
-				System.out.println(planta.datosVersionLarga());
-			}
-		}else {
-			System.out.println("No existe ninguna planta");
-		}
-		
-	}
 
 	// *******************************************************************************************************
 	public void mostrarMenuEjemplares() {
@@ -175,11 +183,66 @@ public class FachadaAdministrador {
 				switch (opcion) {
 				case 1:
 					teclado.nextLine();
-					System.out.print("Introduce el codigo de la Planta a seleccionar: ");
-					String seleccion = teclado.nextLine().trim().toUpperCase();
+					List<Planta> listaPlantas=serviciosPlanta.verPlantas();
+					for (Planta planta : listaPlantas) {
+						System.out.println(planta.datosVersionCorta());
+					}
+					System.out.println("Indroduce el id de la  planta que quieres para crear el ejemplar");
+					Long id=teclado.nextLong();
+					teclado.nextLine();
+					Optional<Planta> planta=serviciosPlanta.existePlanta(id);
+					String nombreEjemplar= planta.get().getCodigo().toUpperCase()+"_"
+													+serviciosEjemplar.siguienteIdEjemplar();
+					
+					Persona persona = serviciosPersona.findByNombre(sesion.getUsuario());
+					String mensajeInicial= "Mensaje inicial escrito por " + persona.getNombre() + " a las " + new Date();
+					
+					List<Mensaje> listaMensajes= new LinkedList<Mensaje>();
+					listaMensajes.add(new Mensaje(mensajeInicial, persona, null));
+					
+					Ejemplar ejemplar = new Ejemplar(nombreEjemplar, planta.get(), listaMensajes);
+					if (serviciosEjemplar.insertarEjemplar(ejemplar)) {
+						System.out.println("Se inserto el ejemplar " + nombreEjemplar);
+					} else {
+						System.out.println("No se pudo insertar el ejemplar");
+					}
 					break;
 				case 2:
 					teclado.nextLine();
+					listaPlantas = serviciosPlanta.verPlantas();
+					System.out.println("Lista de plantas:");
+					for (Planta p : listaPlantas) {
+						System.out.println(p.datosVersionCorta());
+					}
+					System.out.println("Introduce el id o id`s de plantas (separados por coma) para mostrar ejemplares");
+					String ids = teclado.nextLine();
+					String[] idsVarios = ids.split(",");
+					ArrayList<Long> seleccionIds = new ArrayList<Long>();
+					for (String idPlanta : idsVarios) {
+						seleccionIds.add(Long.parseLong(idPlanta.trim()));
+					}
+					ArrayList<Ejemplar> listaEjemplares = serviciosEjemplar.filtrarEjemplaresPlanta(seleccionIds);
+					if (listaEjemplares.size() > 0) {
+				        System.out.println("Nombre del Ejemplar | Nº de Mensajes | Fecha/Hora del Último Mensaje");
+				        System.out.println("--------------------------------------------------------------------");
+
+				        // Mostrar los mensajes de cada ejemplar
+				        for (Ejemplar ej : listaEjemplares) {
+				            System.out.print(ej.getNombre() + "\t\t\t\t");
+				            System.out.print(ej.getListaMensajes().size() + "\t");
+
+				            // Mostrar la fecha del último mensaje si existe
+				            if (!ej.getListaMensajes().isEmpty()) {
+				            	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+				                Mensaje ultimoMensaje = ej.getListaMensajes().get(ej.getListaMensajes().size() - 1);
+				                System.out.println(formatter.format(ultimoMensaje.getFechahora()));
+				            } else {
+				                System.out.println("No hay mensajes");
+				            }
+				        }
+				    } else {
+				        System.out.println("No se encontraron ejemplares para los IDs de plantas proporcionados.");
+				    }
 					break;
 				case 3:
 					teclado.nextLine();

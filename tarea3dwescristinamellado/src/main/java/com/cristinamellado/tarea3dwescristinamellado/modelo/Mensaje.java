@@ -1,7 +1,6 @@
 package com.cristinamellado.tarea3dwescristinamellado.modelo;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.*;

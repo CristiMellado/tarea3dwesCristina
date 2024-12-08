@@ -1,5 +1,6 @@
 package com.cristinamellado.tarea3dwescristinamellado.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,9 @@ public interface PlantaRepository extends JpaRepository<Planta, Long>{
 	Optional<Planta> findById(Long id);
 	
 	Planta findByCodigo(String codigo);
+
+	List<Planta> findAllByOrderByIdAsc();
+
 	
 
 	

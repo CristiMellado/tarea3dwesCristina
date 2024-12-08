@@ -17,10 +17,10 @@ public class ServiciosPlanta {
 
 	/**
 	 * CU1: Ver Plantas
-	 * @return lista completa de plantas
+	 * @return lista completa de plantas ordenadas por código alfabéticamente
 	 */
 	public List<Planta> verPlantas(){
-		return plantaRepository.findAll();
+		return plantaRepository.findAllByOrderByIdAsc();
 	}
 	
 	

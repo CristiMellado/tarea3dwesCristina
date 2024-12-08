@@ -15,7 +15,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Long>{
 
 	Persona findByEmail(String email);
 
-
+	Persona findByNombre(String nombre);
 	
 	//metodos con operativa con la base de datos
 	
