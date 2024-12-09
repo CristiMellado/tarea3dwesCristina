@@ -73,12 +73,16 @@ public class Persona implements Serializable {
 	public void setListaMensajes(List<Mensaje> listaMensajes) {
 		this.listaMensajes = listaMensajes;
 	}
-
+	
 	public String datosVersionCorta() {
 		String resultado = "";
-		resultado += "Id: " + id;
-		resultado += "\nNombre: " + nombre;
-		resultado += "\nE-mail: " + email;
+		resultado += "IdPersona: " + id + " | " + "Nombre: " + nombre;
+		return resultado;
+	}
+
+	public String datosVersionLarga() {
+		String resultado = "";
+		resultado += "IdPersona: " + id + " | " + "Nombre: " + nombre + " | " + "E-mail: " + email;
 		return resultado;
 	}
 	

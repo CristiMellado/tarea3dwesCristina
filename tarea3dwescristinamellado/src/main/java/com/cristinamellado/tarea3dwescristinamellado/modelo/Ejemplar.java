@@ -84,16 +84,13 @@ public class Ejemplar implements Serializable{
 
 	public String datosVersionCorta() {
 		String resultado = "";
-		resultado += "ID: " + id;
-		resultado += "\nNombre: " + nombre;
+		resultado += "IdEjemplar: " + id + " | " + "Nombre: " + nombre;
 		return resultado;
 	}
 
 	public String datosVersionLarga() {
 		String resultado = "";
-		resultado += "ID: " + id;
-		resultado += "\nNombre: " + nombre;
-		resultado += "\nID Planta: " + planta.getId();
+		resultado += "IdEjemplar: " + id + " | Nombre: " + nombre + " | " + "IdPlanta: " + planta.getId();
 		return resultado;
 	}
 	

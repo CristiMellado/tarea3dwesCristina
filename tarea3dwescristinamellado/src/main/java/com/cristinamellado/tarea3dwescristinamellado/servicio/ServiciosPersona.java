@@ -1,5 +1,7 @@
 package com.cristinamellado.tarea3dwescristinamellado.servicio;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +62,9 @@ public class ServiciosPersona {
 		return personaRepository.findByNombre(nombre);
 	}
 	
-
+	public List<Persona> mostrarPersonas(){
+		return personaRepository.findAll();
+	}
+	
 	
 }//class

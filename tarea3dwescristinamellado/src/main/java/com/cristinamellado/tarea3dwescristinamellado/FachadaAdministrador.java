@@ -1,15 +1,16 @@
 package com.cristinamellado.tarea3dwescristinamellado;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +39,7 @@ public class FachadaAdministrador {
 	private Sesion sesion;
 	Scanner teclado = new Scanner(System.in);
 	
-    // Método para cambiar la sesión activa
+
     public void setSesion(Sesion sesion) {
         this.sesion = sesion;
     }
@@ -187,7 +188,7 @@ public class FachadaAdministrador {
 					for (Planta planta : listaPlantas) {
 						System.out.println(planta.datosVersionCorta());
 					}
-					System.out.println("Indroduce el id de la  planta que quieres para crear el ejemplar");
+					System.out.print("Indroduce el id de la  planta que quieres para crear el ejemplar: ");
 					Long id=teclado.nextLong();
 					teclado.nextLine();
 					Optional<Planta> planta=serviciosPlanta.existePlanta(id);
@@ -214,7 +215,7 @@ public class FachadaAdministrador {
 					for (Planta p : listaPlantas) {
 						System.out.println(p.datosVersionCorta());
 					}
-					System.out.println("Introduce el id o id`s de plantas (separados por coma) para mostrar ejemplares");
+					System.out.print("Introduce el id o id`s de plantas (separados por coma) para mostrar ejemplares: ");
 					String ids = teclado.nextLine();
 					String[] idsVarios = ids.split(",");
 					ArrayList<Long> seleccionIds = new ArrayList<Long>();
@@ -250,7 +251,7 @@ public class FachadaAdministrador {
 					for (Ejemplar ej : lista) {
 						System.out.println(ej.datosVersionCorta());
 					}
-					System.out.println("Introduce el id del ejemplar del cual quiere ver los mensajes de seguimiento");
+					System.out.print("Introduce el id del ejemplar del cual quiere ver los mensajes de seguimiento: ");
 					Long idEjemplar=teclado.nextLong();
 					List<Mensaje> mensajes=serviciosEjemplar.seguimientoMensajes(idEjemplar);
 					for (Mensaje mensaje : mensajes) {
@@ -292,11 +293,11 @@ public class FachadaAdministrador {
 					for (Ejemplar ejemplar : listaEjemplares) {
 						System.out.println(ejemplar.datosVersionCorta());
 					}
-					System.out.println("Introduce el id del ejemplar para añadir el mensaje");
+					System.out.print("Introduce el id del ejemplar para añadir el mensaje: ");
 					Long id=teclado.nextLong();
 					teclado.nextLine();
 					Ejemplar ejemplar = serviciosEjemplar.findById(id).get();
-					System.out.println("Introduce tu mensaje");
+					System.out.print("Introduce tu mensaje: ");
 					String mensaje = teclado.nextLine();
 					Persona persona = serviciosPersona.findByNombre(sesion.getUsuario());
 					Mensaje msj = new Mensaje(mensaje,persona, ejemplar);
@@ -308,17 +309,44 @@ public class FachadaAdministrador {
 					break;
 				case 2:
 					teclado.nextLine();
+					List<Persona> listaPersonas= serviciosPersona.mostrarPersonas();
+					for (Persona ps : listaPersonas) {
+						System.out.println(ps.datosVersionCorta());
+					}
+					System.out.print("Introduce el id de la persona para visualizar sus mensajes: ");
+					Long idPersona=teclado.nextLong();
+					List<Mensaje> listaMensajes= serviciosMensaje.filtrarMensajesPersona(idPersona);
+					for (Mensaje msjs : listaMensajes) {
+						System.out.println(msjs.datosVersionCorta());
+					}
 					break;
 				case 3:
-					// Añadi la hora por que no conseguí el manejo de fechas de manera adecuada sin error
 					teclado.nextLine();
-					System.out.print("Introduce fecha inicio para mostrar mensajes en formato (YYYY-MM-dd): ");
-					String fechaInicio = teclado.nextLine();
-					System.out.print("Introduce fecha fin para mostrar mensajes: ");
-					String fechaFin = teclado.nextLine();
+					System.out.print("Introduce la fecha de inicio para visualizar los mensajes (formato DD-MM-YYYY): ");
+					String fechaInicioString = teclado.nextLine().trim();
+					System.out.print("Introduce la fecha de fin para visualizar los mensajes (formato DD-MM-YYYY): ");
+					String fechaFinString = teclado.nextLine().trim();
+					
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					LocalDateTime fechaInicio = LocalDate.parse(fechaInicioString, formatter).atTime(0, 0, 0);
+					LocalDateTime fechaFin = LocalDate.parse(fechaFinString, formatter).atTime(23, 59, 59);
+					List<Mensaje> mensajes = serviciosMensaje.filtrarMensajesRangoFechas(fechaInicio, fechaFin);
+					for (Mensaje m : mensajes) {
+						System.out.println(m.datosVersionCorta());
+					}
 					break;
 				case 4:
 					teclado.nextLine();
+					List<Planta> listaPlantas=serviciosPlanta.verPlantas();
+					for (Planta planta : listaPlantas) {
+						System.out.println(planta.datosVersionCorta());
+					}
+					System.out.print("Introduce el id de la planta para visualizar sus mensajes: ");
+					Long idPlanta=teclado.nextLong();
+					List<Mensaje> listaMsj=serviciosMensaje.filtrarMensajesPlanta(idPlanta);
+					for (Mensaje msjs : listaMsj) {
+						System.out.println(msjs.datosVersionCorta());
+					}
 					break;
 				case 5:
 					salirMensajes = true;

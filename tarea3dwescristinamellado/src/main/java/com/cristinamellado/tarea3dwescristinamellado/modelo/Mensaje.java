@@ -83,19 +83,14 @@ public class Mensaje implements Serializable{
 
 	public String datosVersionCorta() {
 		String resultado = "";
-		resultado += "Id: " + id;
-		resultado += "\nMensaje: " + mensaje;
-		resultado += "\nId Persona: " + persona.getId();
+		resultado += "IdMsj: " + id + " | " + "Fecha-Hora: " + fechahora + " | " + "Mensaje: " + mensaje;
 		return resultado;
 	}
 
 	public String datosVersionLarga() {
 		String resultado = "";
-		resultado += "Id: " + id;
-		resultado += "\nFecha-Hora: " + fechahora;
-		resultado += "\nMensaje: " + mensaje;
-		resultado += "\nNombre Ejemplar: " + ejemplar.getNombre();
-		resultado += "\nNombre Persona: " + persona.getNombre();
+		resultado += "IdMsj: " + id + " | " + "Fecha-Hora: " + fechahora + " | " + "Mensaje: " + mensaje +
+				" | " + "Nombre Ejemplar: " + ejemplar.getNombre() + " | " + "Nombre Persona: " + persona.getNombre();
 		return resultado;
 	}
 	

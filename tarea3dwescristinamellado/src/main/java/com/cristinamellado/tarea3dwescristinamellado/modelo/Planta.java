@@ -95,17 +95,14 @@ public class Planta implements Serializable {
 
 	public String datosVersionCorta() {
 		String resultado = "";
-		resultado += "ID: " + id;
-		resultado += "\nCódigo: " + codigo;
+		resultado += "IdPlanta: " + id + " | " + "Nombre común: " + nombreComun;
 		return resultado;
 	}
 
 	public String datosVersionLarga() {
 		String resultado = "";
-		resultado += "ID: " + id;
-		resultado += "\nCódigo: " + codigo;
-		resultado += "\nNombre común: " + nombreComun;
-		resultado += "\nNombre científico: " + nombreCientifico;
+		resultado += "IdPlanta: " + id + " | " + "Código: " + codigo + " | " + "Nombre común: " + nombreComun +
+				" | " + "Nombre científico: " + nombreCientifico;
 		return resultado;
 	}
 	

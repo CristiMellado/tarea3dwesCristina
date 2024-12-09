@@ -1,5 +1,7 @@
 package com.cristinamellado.tarea3dwescristinamellado.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +19,5 @@ public interface PersonaRepository extends JpaRepository<Persona, Long>{
 
 	Persona findByNombre(String nombre);
 	
-	//metodos con operativa con la base de datos
-	
-	//el JPA repository tiene un montón de métodos que podemos
-	//utilizar.
 	
 }
