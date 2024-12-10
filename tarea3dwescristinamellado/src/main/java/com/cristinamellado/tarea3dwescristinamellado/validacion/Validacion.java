@@ -14,8 +14,11 @@ public class Validacion {
 	 * @param nombre
 	 * @return boolean indicando si es válido o no
 	 */
-	public static boolean validarUsuario(String nombre) {
-		if (nombre == null || nombre.isEmpty() || nombre.contains(" ")) {
+	public static boolean validarUsuario(String usuario) {
+		String userRegex = "^[a-zA-Z0-9]+$";
+		Pattern pattern = Pattern.compile(userRegex);
+		Matcher matcher = pattern.matcher(usuario);
+		if (usuario == null || usuario.isEmpty() || usuario.contains(" ") || !matcher.matches()) {
 			return false;
 		}
 		return true;

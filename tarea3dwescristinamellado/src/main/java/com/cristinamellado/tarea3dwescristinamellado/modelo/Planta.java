@@ -30,13 +30,6 @@ public class Planta implements Serializable {
 	
 	public Planta() {}
 	
-	public Planta(String codigo, String nombreComun, String nombreCientifico, List<Ejemplar> listaEjemplares) {
-		this.codigo = codigo;
-		this.nombreComun = nombreComun;
-		this.nombreCientifico = nombreCientifico;
-		this.listaEjemplares = listaEjemplares;
-	}
-
 
 	public Planta(String codigo, String nombreComun, String nombreCientifico) {
 		this.codigo = codigo;

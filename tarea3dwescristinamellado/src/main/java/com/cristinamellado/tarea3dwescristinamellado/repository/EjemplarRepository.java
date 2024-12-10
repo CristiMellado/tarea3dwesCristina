@@ -28,6 +28,8 @@ public interface EjemplarRepository extends JpaRepository<Ejemplar, Long>{
 		return 1L;
 	}
 
+	Optional<Ejemplar> findById( Long id);
+	
 	@Query("Select e from Ejemplar e where e.planta.id in (:seleccionIds)")
 	 List<Ejemplar> filtrarEjemplaresPlanta(@Param("seleccionIds") List<Long> seleccionIds);
 	
@@ -40,6 +42,5 @@ public interface EjemplarRepository extends JpaRepository<Ejemplar, Long>{
 			""")
 	List<Mensaje> seguimientoMensajes(@Param("idEjemplar") Long idEjemplar);
 	
-	Optional<Ejemplar> findById( Long id);
 	
 }

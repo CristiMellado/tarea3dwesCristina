@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Ejemplar;
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Mensaje;
 import com.cristinamellado.tarea3dwescristinamellado.repository.EjemplarRepository;
+import com.cristinamellado.tarea3dwescristinamellado.validacion.Validacion;
 
 
 @Service
@@ -19,8 +20,10 @@ public class ServiciosEjemplar {
 
 	
 	public boolean insertarEjemplar(Ejemplar ejemplar) {
-		if (ejemplarRepository.saveAndFlush(ejemplar) != null) {
-			return true;
+		if (Validacion.validarCodigoPlanta(ejemplar.getPlanta().getCodigo())) {
+			if (ejemplarRepository.saveAndFlush(ejemplar) != null) {
+				return true;
+			}
 		}
 		return false;
 	}

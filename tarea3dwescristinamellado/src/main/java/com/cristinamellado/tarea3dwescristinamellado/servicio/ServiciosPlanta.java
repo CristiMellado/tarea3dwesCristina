@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Planta;
 import com.cristinamellado.tarea3dwescristinamellado.repository.PlantaRepository;
+import com.cristinamellado.tarea3dwescristinamellado.validacion.Validacion;
 
 @Service
 public class ServiciosPlanta {
@@ -29,7 +30,7 @@ public class ServiciosPlanta {
 	 * @return boolean que indica si se pudo o no insertar la planta
 	 */
 	public boolean insertarPlanta(Planta planta) {
-		if(plantaRepository.findByCodigo(planta.getCodigo()) == null) {
+		if (codigoCorrecto(planta.getCodigo())) {
 			plantaRepository.saveAndFlush(planta);
 			return true;
 		}
@@ -52,6 +53,20 @@ public class ServiciosPlanta {
 	public Optional<Planta> existePlanta(Long id) {
 		return plantaRepository.findById(id);
 	}
+	
+	public Planta findByCodigo(String codigo) {
+		return plantaRepository.findByCodigo(codigo);
+	}
+
+
+	public boolean codigoCorrecto(String codigo) {
+		if(Validacion.validarCodigoPlanta(codigo) && plantaRepository.findByCodigo(codigo) == null) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 	
 
 	

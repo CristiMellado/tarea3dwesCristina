@@ -61,7 +61,7 @@ public class FachadaInvitado {
 
 						if (correcto) {
 							sesion.setUsuario(usuario);
-							System.out.println("¡Bienvenido "+ usuario.toUpperCase()+"!");
+							System.out.println("¡Bienvenid@ "+ usuario.toUpperCase()+"!");
 							if (sesion.getPerfil() == Perfil.ADMINISTRADOR) {
 								fachadaAdministrador.setSesion(sesion);
 								fachadaAdministrador.mostrarMenu();
@@ -81,7 +81,8 @@ public class FachadaInvitado {
 						System.out.println("Opción incorrecta");
 					}
 				} catch (InputMismatchException e) {
-					System.out.println("Entrada no válida introduce el tipo de dato correcto");
+					System.out.println("Entrada no válida. Introduce el tipo de dato correcto.");
+					teclado.nextLine();
 				} catch (Exception e) {
 					System.out.println("Ocurrio un error " + e.getMessage());
 				}

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -36,7 +37,7 @@ public class FachadaPersonal {
 	@Autowired
 	ServiciosEjemplar serviciosEjemplar;
 	
-    // Método para cambiar la sesión activa
+ 
     public void setSesion(Sesion sesion) {
         this.sesion = sesion;
     }
@@ -90,14 +91,23 @@ public class FachadaPersonal {
 				switch (opcion) {
 				case 1:
 					teclado.nextLine();
-					List<Planta> listaPlantas=serviciosPlanta.verPlantas();
-					for (Planta planta : listaPlantas) {
-						System.out.println(planta.datosVersionCorta());
+					List<Planta> listaPlantas  = serviciosPlanta.verPlantas();
+					if(!listaPlantas.isEmpty()) {
+						for (Planta planta : listaPlantas) {
+							System.out.println(planta.datosVersionCorta());
+						}
+					}else {
+						System.out.println("No existe ninguna planta");
 					}
+					
 					System.out.print("Indroduce el id de la  planta que quieres para crear el ejemplar: ");
 					Long id=teclado.nextLong();
 					teclado.nextLine();
 					Optional<Planta> planta=serviciosPlanta.existePlanta(id);
+					if(!planta.isPresent()) {
+						System.out.println("No existe esa planta.Introduce un id de los que aparece en la lista.");
+						break;
+					}
 					String nombreEjemplar= planta.get().getCodigo().toUpperCase()+"_"
 													+serviciosEjemplar.siguienteIdEjemplar();
 					
@@ -116,40 +126,48 @@ public class FachadaPersonal {
 					break;
 				case 2:
 					teclado.nextLine();
-					listaPlantas = serviciosPlanta.verPlantas();
-					System.out.println("Lista de plantas:");
-					for (Planta p : listaPlantas) {
-						System.out.println(p.datosVersionCorta());
+					listaPlantas  = serviciosPlanta.verPlantas();
+					if(!listaPlantas.isEmpty()) {
+						for (Planta p : listaPlantas) {
+							System.out.println(p.datosVersionCorta());
+						}
+					}else {
+						System.out.println("No existe ninguna planta");
 					}
 					System.out.print("Introduce el id o id`s de plantas (separados por coma) para mostrar ejemplares: ");
 					String ids = teclado.nextLine();
+					
 					String[] idsVarios = ids.split(",");
 					ArrayList<Long> seleccionIds = new ArrayList<Long>();
-					for (String idPlanta : idsVarios) {
-						seleccionIds.add(Long.parseLong(idPlanta.trim()));
+					try {
+						for (String idPlanta : idsVarios) {
+							seleccionIds.add(Long.parseLong(idPlanta.trim()));
+						}
+						List<Ejemplar> listaEjemplares = serviciosEjemplar.filtrarEjemplaresPlanta(seleccionIds);
+						if (listaEjemplares.size() > 0) {
+						    System.out.println("Nombre del Ejemplar | Nº de Mensajes | Fecha/Hora del Último Mensaje");
+						    System.out.println("--------------------------------------------------------------------");
+
+						    // Mostrar los mensajes de cada ejemplar
+						    for (Ejemplar ej : listaEjemplares) {
+						        System.out.print(ej.getNombre() + "\t\t\t\t");
+						        System.out.print(ej.getListaMensajes().size() + "\t");
+
+						        // Mostrar la fecha del último mensaje si existe
+						        if (!ej.getListaMensajes().isEmpty()) {
+						        	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+						            Mensaje ultimoMensaje = ej.getListaMensajes().get(ej.getListaMensajes().size() - 1);
+						            System.out.println(formatter.format(ultimoMensaje.getFechahora()));
+						        } else {
+						            System.out.println("No hay mensajes");
+						        }
+						    }
+						} else {
+						    System.out.println("No se encontraron ejemplares para los IDs de plantas proporcionados.");
+						}
+					} catch (NumberFormatException e) {
+						System.out.println("El ID es un número o números separados por comas.");
 					}
-					List<Ejemplar> listaEjemplares = serviciosEjemplar.filtrarEjemplaresPlanta(seleccionIds);
-					if (listaEjemplares.size() > 0) {
-				        System.out.println("Nombre del Ejemplar | Nº de Mensajes | Fecha/Hora del Último Mensaje");
-				        System.out.println("--------------------------------------------------------------------");
-
-				        // Mostrar los mensajes de cada ejemplar
-				        for (Ejemplar ej : listaEjemplares) {
-				            System.out.print(ej.getNombre() + "\t\t\t\t");
-				            System.out.print(ej.getListaMensajes().size() + "\t");
-
-				            // Mostrar la fecha del último mensaje si existe
-				            if (!ej.getListaMensajes().isEmpty()) {
-				            	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
-				                Mensaje ultimoMensaje = ej.getListaMensajes().get(ej.getListaMensajes().size() - 1);
-				                System.out.println(formatter.format(ultimoMensaje.getFechahora()));
-				            } else {
-				                System.out.println("No hay mensajes");
-				            }
-				        }
-				    } else {
-				        System.out.println("No se encontraron ejemplares para los IDs de plantas proporcionados.");
-				    }
 					break;
 				case 3:
 					teclado.nextLine();
@@ -159,6 +177,10 @@ public class FachadaPersonal {
 					}
 					System.out.print("Introduce el id del ejemplar del cual quiere ver los mensajes de seguimiento: ");
 					Long idEjemplar=teclado.nextLong();
+					Optional<Ejemplar> ej=serviciosEjemplar.findById(idEjemplar);
+					if(!ej.isPresent()) {
+						System.out.println("No existe ese ejemplar. Introduce un id de la lista mostrada");
+					}
 					List<Mensaje> mensajes=serviciosEjemplar.seguimientoMensajes(idEjemplar);
 					for (Mensaje mensaje : mensajes) {
 						System.out.println(mensaje.datosVersionLarga());
@@ -201,6 +223,11 @@ public class FachadaPersonal {
 					}
 					System.out.print("Introduce el id del ejemplar para añadir el mensaje: ");
 					Long id=teclado.nextLong();
+					Optional<Ejemplar> ej=serviciosEjemplar.findById(id);
+					if(!ej.isPresent()) {
+						System.out.println("No existe ese ejemplar.Introduce un id de la lista mostrada");
+						break;
+					}
 					teclado.nextLine();
 					Ejemplar ejemplar = serviciosEjemplar.findById(id).get();
 					System.out.print("Introduce tu mensaje: ");
@@ -221,6 +248,11 @@ public class FachadaPersonal {
 					}
 					System.out.print("Introduce el id de la persona para visualizar sus mensajes: ");
 					Long idPersona=teclado.nextLong();
+					Optional<Persona> per =serviciosPersona.findById(idPersona);
+					if(!per.isPresent()) {
+						System.out.println("No existe esa persona.Introduce un id de la lista mostrada.");
+						break;
+					}
 					List<Mensaje> listaMensajes= serviciosMensaje.filtrarMensajesPersona(idPersona);
 					for (Mensaje msjs : listaMensajes) {
 						System.out.println(msjs.datosVersionCorta());
@@ -228,17 +260,20 @@ public class FachadaPersonal {
 					break;
 				case 3:
 					teclado.nextLine();
-					System.out.print("Introduce la fecha de inicio para visualizar los mensajes (formato DD-MM-YYYY): ");
-					String fechaInicioString = teclado.nextLine().trim();
-					System.out.print("Introduce la fecha de fin para visualizar los mensajes (formato DD-MM-YYYY): ");
-					String fechaFinString = teclado.nextLine().trim();
-					
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-					LocalDateTime fechaInicio = LocalDate.parse(fechaInicioString, formatter).atTime(0, 0, 0);
-					LocalDateTime fechaFin = LocalDate.parse(fechaFinString, formatter).atTime(23, 59, 59);
-					List<Mensaje> mensajes = serviciosMensaje.filtrarMensajesRangoFechas(fechaInicio, fechaFin);
-					for (Mensaje m : mensajes) {
-						System.out.println(m.datosVersionCorta());
+					try {
+						System.out.print("Introduce la fecha de inicio para visualizar los mensajes (formato DD-MM-YYYY): ");
+						String fechaInicioString = teclado.nextLine().trim();
+						System.out.print("Introduce la fecha de fin para visualizar los mensajes (formato DD-MM-YYYY): ");
+						String fechaFinString = teclado.nextLine().trim();
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						LocalDateTime fechaInicio = LocalDate.parse(fechaInicioString, formatter).atTime(0, 0, 0);
+						LocalDateTime fechaFin = LocalDate.parse(fechaFinString, formatter).atTime(23, 59, 59);
+						List<Mensaje> mensajes = serviciosMensaje.filtrarMensajesRangoFechas(fechaInicio, fechaFin);
+						for (Mensaje m : mensajes) {
+							System.out.println(m.datosVersionCorta());
+						}
+					} catch (DateTimeParseException e) {
+						System.out.println("Formato Incorrecto. Introduce el (formato DD-MM-YYYY)");
 					}
 					break;
 				case 4:
@@ -249,6 +284,11 @@ public class FachadaPersonal {
 					}
 					System.out.print("Introduce el id de la planta para visualizar sus mensajes: ");
 					Long idPlanta=teclado.nextLong();
+					Optional<Planta> planta=serviciosPlanta.existePlanta(idPlanta);
+					if(!planta.isPresent()) {
+						System.out.println("No existe esa planta.Introduce un id de la lista mostrada");
+						break;
+					}
 					List<Mensaje> listaMsj=serviciosMensaje.filtrarMensajesPlanta(idPlanta);
 					for (Mensaje msjs : listaMsj) {
 						System.out.println(msjs.datosVersionCorta());
@@ -272,7 +312,7 @@ public class FachadaPersonal {
 	
 //**************************************************************************************************
 	private void cerrarSesion() {
-		System.out.println("Sesión Finalizada");
+		System.out.println("¡Hasta luego "+ sesion.getUsuario().toUpperCase()+"!");
 		sesion.setPerfil(Perfil.INVITADO);
 		sesion.setUsuario(null);
 	}
