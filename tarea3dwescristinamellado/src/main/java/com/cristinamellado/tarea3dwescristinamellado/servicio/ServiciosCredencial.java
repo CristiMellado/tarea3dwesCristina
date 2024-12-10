@@ -23,16 +23,14 @@ public class ServiciosCredencial {
 	}
 	
 	public boolean autenticar(String usuario, String password) {
-		if (Validacion.validarContrasena(password)) {
-			if (usuario.equals("admin") && password.equals("admin")) {
-				FachadaInvitado.sesion = new Sesion(Perfil.ADMINISTRADOR);
+		if (usuario.equals("admin") && password.equals("admin")) {
+			FachadaInvitado.sesion = new Sesion(Perfil.ADMINISTRADOR);
+			return true;
+		} else {
+			Credencial ret = credencialRepository.autenticar(usuario, password);
+			if (ret!=null) {
+				FachadaInvitado.sesion = new Sesion(Perfil.PERSONAL);
 				return true;
-			} else {
-				Credencial ret = credencialRepository.autenticar(usuario, password);
-				if (ret!=null) {
-					FachadaInvitado.sesion = new Sesion(Perfil.PERSONAL);
-					return true;
-				}
 			}
 		}
 		return false;

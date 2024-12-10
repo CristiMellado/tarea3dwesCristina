@@ -21,7 +21,7 @@ public class ServiciosPlanta {
 	 * @return lista completa de plantas ordenadas por código alfabéticamente
 	 */
 	public List<Planta> verPlantas(){
-		return plantaRepository.findAllByOrderByIdAsc();
+		return plantaRepository.findAllByOrderByCodigoAsc();
 	}
 	
 	

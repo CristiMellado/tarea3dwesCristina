@@ -15,7 +15,7 @@ public interface PlantaRepository extends JpaRepository<Planta, Long>{
 	
 	Planta findByCodigo(String codigo);
 
-	List<Planta> findAllByOrderByIdAsc();
+	List<Planta> findAllByOrderByCodigoAsc();
 
 	
 

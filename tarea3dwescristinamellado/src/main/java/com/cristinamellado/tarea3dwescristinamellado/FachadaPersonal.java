@@ -92,12 +92,12 @@ public class FachadaPersonal {
 				case 1:
 					teclado.nextLine();
 					List<Planta> listaPlantas  = serviciosPlanta.verPlantas();
-					if(!listaPlantas.isEmpty()) {
-						for (Planta planta : listaPlantas) {
-							System.out.println(planta.datosVersionCorta());
-						}
-					}else {
-						System.out.println("No existe ninguna planta");
+					if(listaPlantas.isEmpty()) {
+						System.out.println("No existe ninguna planta, por lo que no se puede registrar un nuevo ejemplar.");
+						break;
+					}
+					for (Planta planta : listaPlantas) {
+						System.out.println(planta.datosVersionCorta());
 					}
 					
 					System.out.print("Indroduce el id de la  planta que quieres para crear el ejemplar: ");
@@ -127,12 +127,12 @@ public class FachadaPersonal {
 				case 2:
 					teclado.nextLine();
 					listaPlantas  = serviciosPlanta.verPlantas();
-					if(!listaPlantas.isEmpty()) {
-						for (Planta p : listaPlantas) {
-							System.out.println(p.datosVersionCorta());
-						}
-					}else {
-						System.out.println("No existe ninguna planta");
+					if(listaPlantas.isEmpty()) {
+						System.out.println("No existe ninguna planta, por lo que no se puede filtrar ejemplares por tipo de planta.");
+						break;
+					}
+					for (Planta p : listaPlantas) {
+						System.out.println(p.datosVersionCorta());
 					}
 					System.out.print("Introduce el id o id`s de plantas (separados por coma) para mostrar ejemplares: ");
 					String ids = teclado.nextLine();
@@ -165,6 +165,7 @@ public class FachadaPersonal {
 						} else {
 						    System.out.println("No se encontraron ejemplares para los IDs de plantas proporcionados.");
 						}
+						//captura la excepcion cuando introduzco letras
 					} catch (NumberFormatException e) {
 						System.out.println("El ID es un número o números separados por comas.");
 					}
@@ -172,6 +173,10 @@ public class FachadaPersonal {
 				case 3:
 					teclado.nextLine();
 					List<Ejemplar> lista=serviciosEjemplar.listaEjemplares();
+					if(lista.isEmpty()) {
+						System.out.println("Lista vacia de ejemplares, no se pueden visualizar los mensajes.");
+						break;
+					}
 					for (Ejemplar ej : lista) {
 						System.out.println(ej.datosVersionCorta());
 					}
@@ -218,6 +223,10 @@ public class FachadaPersonal {
 				case 1:
 					teclado.nextLine();
 					List<Ejemplar> listaEjemplares=serviciosEjemplar.listaEjemplares();
+					if (listaEjemplares.isEmpty()) {
+						System.out.println("No existen ejemplares");
+						break;
+					}
 					for (Ejemplar ejemplar : listaEjemplares) {
 						System.out.println(ejemplar.datosVersionCorta());
 					}
@@ -243,6 +252,10 @@ public class FachadaPersonal {
 				case 2:
 					teclado.nextLine();
 					List<Persona> listaPersonas= serviciosPersona.mostrarPersonas();
+					if(listaPersonas.isEmpty()) {
+						System.out.println("No existen personas");
+						break;
+					}
 					for (Persona ps : listaPersonas) {
 						System.out.println(ps.datosVersionCorta());
 					}
@@ -254,6 +267,10 @@ public class FachadaPersonal {
 						break;
 					}
 					List<Mensaje> listaMensajes= serviciosMensaje.filtrarMensajesPersona(idPersona);
+					if(listaMensajes.isEmpty()) {
+						System.out.println("No existen mensajes para esta persona");
+						break;
+					}
 					for (Mensaje msjs : listaMensajes) {
 						System.out.println(msjs.datosVersionCorta());
 					}
@@ -269,9 +286,13 @@ public class FachadaPersonal {
 						LocalDateTime fechaInicio = LocalDate.parse(fechaInicioString, formatter).atTime(0, 0, 0);
 						LocalDateTime fechaFin = LocalDate.parse(fechaFinString, formatter).atTime(23, 59, 59);
 						List<Mensaje> mensajes = serviciosMensaje.filtrarMensajesRangoFechas(fechaInicio, fechaFin);
+						if(mensajes.isEmpty()) {
+							System.out.println("No hay mensajes en ese rango de fechas");
+							break;
+						}
 						for (Mensaje m : mensajes) {
 							System.out.println(m.datosVersionCorta());
-						}
+						}	
 					} catch (DateTimeParseException e) {
 						System.out.println("Formato Incorrecto. Introduce el (formato DD-MM-YYYY)");
 					}
@@ -279,6 +300,10 @@ public class FachadaPersonal {
 				case 4:
 					teclado.nextLine();
 					List<Planta> listaPlantas=serviciosPlanta.verPlantas();
+					if(listaPlantas.isEmpty()) {
+						System.out.println("No existen plantas");
+						break;
+					}
 					for (Planta planta : listaPlantas) {
 						System.out.println(planta.datosVersionCorta());
 					}
@@ -290,6 +315,10 @@ public class FachadaPersonal {
 						break;
 					}
 					List<Mensaje> listaMsj=serviciosMensaje.filtrarMensajesPlanta(idPlanta);
+					if(listaMsj.isEmpty()) {
+						System.out.println("No existen mensajes para esa planta");
+						break;
+					}
 					for (Mensaje msjs : listaMsj) {
 						System.out.println(msjs.datosVersionCorta());
 					}

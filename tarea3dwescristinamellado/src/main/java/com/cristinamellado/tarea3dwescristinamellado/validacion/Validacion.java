@@ -36,7 +36,7 @@ public class Validacion {
 		Pattern pattern = Pattern.compile(passwordRegex);
 		Matcher matcher = pattern.matcher(password);
 
-		if (password == null || password.isEmpty() || password.length() < 5 || password.contains(" ")
+		if (password == null || password.isEmpty() || password.contains(" ")
 				|| !matcher.matches()) {
 			return false;
 		}

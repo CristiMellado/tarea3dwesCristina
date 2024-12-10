@@ -24,20 +24,30 @@ public class ServiciosPersona {
 	@Transactional 
 	public String registrarPersona(Persona persona, String usuario, String password) {
 		StringBuilder mensaje = new StringBuilder();
+		boolean valido = true;
 		
-		if (!Validacion.validarUsuario(usuario) ||
-				!Validacion.validarContrasena(password) ||
-				!Validacion.validarEmail(persona.getEmail())) {
-			mensaje.append("Los campos nombre, email o contraseña no son válidos. Revisa los datos y vuelve a introducirlos");
-		} else {
+		if(!Validacion.validarEmail(persona.getEmail())){
+			mensaje.append("El campo email no es válido. ");
+			valido = false;
+		}
+		if(!Validacion.validarUsuario(usuario)) {
+			mensaje.append("El campo usuario no es válido. ");
+			valido = false;
+		}
+		if(!Validacion.validarContrasena(password)){
+			mensaje.append("El campo contraseña no es válido. ");
+			valido = false;
+		}
+		
+		if (valido) {
 			boolean emailExiste = personaRepository.findByEmail(persona.getEmail()) != null;
 			boolean usuarioExiste = credencialRepository.findByUsuario(usuario) != null;
 			
 			if (emailExiste) {
-				mensaje.append("El email ").append(persona.getEmail()).append(" ya existe");
+				mensaje.append("El email ").append(persona.getEmail().toUpperCase()).append(" ya existe. Prueba con otro. ");
 			}
 			if (usuarioExiste) {
-				mensaje.append("El usuario ").append(usuario).append(" ya existe");
+				mensaje.append("El usuario ").append(usuario.toUpperCase()).append(" ya existe. Prueba con otro. ");
 			}
 			if (emailExiste || usuarioExiste) {
 				return mensaje.toString();
@@ -53,7 +63,7 @@ public class ServiciosPersona {
 				mensaje.append("No se pudo insertar la persona. Intenta nuevamente.");
 			}
 		}
-
+		
 	    return mensaje.toString();
 	}
 	
