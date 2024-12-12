@@ -2,11 +2,8 @@ package com.cristinamellado.tarea3dwescristinamellado.servicio;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
 import com.cristinamellado.tarea3dwescristinamellado.modelo.Mensaje;
 import com.cristinamellado.tarea3dwescristinamellado.repository.MensajeRepository;
 
@@ -36,4 +33,4 @@ public class ServiciosMensaje {
 		return mensajesRepository.filtrarMensajesRangoFechas(fechaInicio, fechaFin);
 	}
 	
-}//class
+}

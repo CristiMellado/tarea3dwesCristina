@@ -88,11 +88,5 @@ public class Ejemplar implements Serializable{
 		return resultado;
 	}
 
-	public String datosVersionLarga() {
-		String resultado = "";
-		resultado += "IdEjemplar: " + id + " | Nombre: " + nombre + " | " + "IdPlanta: " + planta.getId();
-		return resultado;
-	}
-	
 
 }

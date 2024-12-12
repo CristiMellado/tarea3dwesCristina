@@ -29,13 +29,6 @@ public class Persona implements Serializable {
 
 	public Persona() {}
 		
-
-	public Persona(String nombre, String email, List<Mensaje> listaMensajes) {
-		this.nombre = nombre;
-		this.email = email;
-		this.listaMensajes = listaMensajes;
-	}
-	
 	public Persona(String nombre, String email) {
 		this.nombre = nombre;
 		this.email = email;

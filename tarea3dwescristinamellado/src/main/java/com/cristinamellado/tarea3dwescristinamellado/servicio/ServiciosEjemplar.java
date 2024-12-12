@@ -59,4 +59,4 @@ public class ServiciosEjemplar {
 	public Optional<Ejemplar> findById(Long id) {
 		return ejemplarRepository.findById(id);
 	}
-}//class
+}

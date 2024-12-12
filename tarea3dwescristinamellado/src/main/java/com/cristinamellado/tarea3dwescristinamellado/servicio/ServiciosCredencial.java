@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.cristinamellado.tarea3dwescristinamellado.FachadaInvitado;
 import com.cristinamellado.tarea3dwescristinamellado.modelo.*;
 import com.cristinamellado.tarea3dwescristinamellado.repository.CredencialRepository;
-import com.cristinamellado.tarea3dwescristinamellado.validacion.Validacion;
 
 
 @Service
@@ -39,4 +38,4 @@ public class ServiciosCredencial {
 	
 
 	
-}//class
+}

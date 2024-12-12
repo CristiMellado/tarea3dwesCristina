@@ -19,8 +19,6 @@ import com.cristinamellado.tarea3dwescristinamellado.modelo.*;
 import com.cristinamellado.tarea3dwescristinamellado.servicio.*;
 
 
-
-
 @Component
 public class FachadaAdministrador {
 
@@ -442,4 +440,4 @@ public class FachadaAdministrador {
 		sesion.setUsuario(null);
 	}
 	
-}//class
+}
